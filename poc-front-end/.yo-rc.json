@@ -1,0 +1,8 @@
+{
+  "generator-angular-nmi": {
+    "resourcePath": "src/app/pages/openwis/search",
+    "resourceModule": "BlurAdmin.pages.openwis",
+    "resourceName": "search",
+    "resourceNameForJS": "Search"
+  }
+}

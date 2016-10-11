@@ -1,0 +1,22 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <h2>Search term:</h2>
+            <input type="text"
+                   ng-model="searchCtrl.term"
+                   ng-change="searchCtrl.search()"
+                   ng-model-options="{debounce: 500}"/>
+            ({{searchCtrl.total}} results)
+            <br><br>
+        </div>
+    </div>
+    <div class="row" ng-repeat="v in searchCtrl.results">
+        <div class="col-lg-12 col-md-12">
+            <div ba-panel ba-panel-title="{{v._source['OAI-PMH'].request.identifier | limitTo: 50}}"
+                 ba-panel-class="with-scroll table-panel">
+                {{v._source["OAI-PMH"].GetRecord.record.metadata["gmd:MD_Metadata"]["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:abstract"]["gco:CharacterString"]}}<br>
+                {{v._source|json}}
+            </div>
+        </div>
+    </div>
+</div>

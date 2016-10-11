@@ -1,0 +1,17 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet author="European Dynamics SA" id="openwis_0001">
+		<sql>
+			CREATE TABLE `server` (
+			`id` VARCHAR(36) NOT NULL,
+			`servername` VARCHAR(255) NOT NULL,
+			`url` VARCHAR(255) NOT NULL,
+			`dataset` VARCHAR(255) NOT NULL,
+			PRIMARY KEY (`id`));
+		</sql>
+	</changeSet>
+	
+</databaseChangeLog>

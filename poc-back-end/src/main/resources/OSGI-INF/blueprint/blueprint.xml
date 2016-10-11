@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+		   xmlns:jpa="http://aries.apache.org/xmlns/jpa/v2.0.0"
+		   xmlns:tx="http://aries.apache.org/xmlns/transactions/v2.0.0">
+
+	<jpa:enable />
+	<tx:enable />
+	<!-- EXTERNAL SERVICES -->
+	<!--<reference id="SecurityProxyRest"-->
+		<!--interface="com.eurodyn.qlack2.fuse.security.proxy.api.SecurityProxy" />-->
+
+	<!--&lt;!&ndash; Ticket Interceptor &ndash;&gt;-->
+	<!--<bean id="ExtractTicketInterceptor"-->
+		<!--class="com.eurodyn.qlack2.fuse.security.proxy.impl.util.ExtractTicketInterceptor">-->
+		<!--<property name="ticketHeaderName" value="${ticket.header.name}" />-->
+	<!--</bean><bean id="CleanTicketInterceptor"-->
+		<!--class="com.eurodyn.qlack2.fuse.security.proxy.impl.util.CleanTicketInterceptor"/>-->
+		
+</blueprint>

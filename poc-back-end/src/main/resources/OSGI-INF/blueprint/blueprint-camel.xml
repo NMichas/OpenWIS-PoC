@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <bean id="Index1Processor" class="com.openwis.poc.processors.Index1Processor"/>
+    <bean id="Index2Processor" class="com.openwis.poc.processors.Index2Processor"/>
+    <!--<bean id="Index3Processor" class="com.openwis.poc.processors.Index3Processor"/>-->
+
+    <!-- Setup ActiveMQ connection pool -->
+    <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://127.0.0.1:61616" />
+    </bean>
+
+    <bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+          init-method="start" destroy-method="stop">
+        <property name="maxConnections" value="100" />
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+
+    <bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+        <property name="connectionFactory" ref="pooledConnectionFactory" />
+        <property name="concurrentConsumers" value="25" />
+    </bean>
+
+    <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="configuration" ref="jmsConfig" />
+    </bean>
+
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint"
+                  id="camel" trace="false">
+
+        <!-- Post to index1 -->
+        <route id="index1.post">
+            <from uri="direct:index1.post"/>
+            <to uri="activemq:queue:index1" />
+        </route>
+
+        <!-- Listen on index1 -->
+        <route id="index1.listen">
+            <from uri="activemq:queue:index1" />
+            <bean ref="Index1Processor" />
+        </route>
+
+        <!-- Post to index2 -->
+        <route id="index2.post">
+            <from uri="direct:index2.post"/>
+            <to uri="activemq:queue:index2" />
+        </route>
+
+        <!-- Listen on index2 -->
+        <route id="index2.listen">
+            <from uri="activemq:queue:index2" />
+            <bean ref="Index2Processor" />
+        </route>
+
+        <!-- Post to index3 -->
+        <route id="index3.post">
+            <from uri="direct:index3.post"/>
+            <to uri="activemq:queue:index3" />
+        </route>
+
+        <!-- Listen on index3 -->
+        <route id="index3.listen">
+            <from uri="activemq:queue:index3" />
+            <bean ref="index3Processor" />
+        </route>
+
+
+        <!-- A helper route for InSocketHandler to send a message to ActiveMQ,
+            so that another listener initiates the data fetching process. -->
+        <!--<route id="OVSTACK.withings.initiate.data.fetch">-->
+            <!--<from uri="direct:initiate.data.fetch"/>-->
+            <!--<to uri="activemq:queue:OVES.stacks.withings.fetch" />-->
+        <!--</route>-->
+
+        <!-- Listen for requests to fetch new data for a user and post them back
+            to OVES using the OV neutral format. -->
+        <!--<route id="OVSTACK.withings.fetch">-->
+            <!--<from uri="activemq:queue:OVES.stacks.withings.fetch" />-->
+            <!--<bean ref="FetchDataHandler" />-->
+            <!--<to uri="activemq:queue:OVES.data.in" />-->
+        <!--</route>-->
+
+        <!-- A route for debugging reading messages from the filesystem -->
+        <!--<route id="OVSTACK.withings.fetch-debug">-->
+            <!--<from uri="file:///Users/nassos/Projects/OpenVitals/ov-docs/APIs/Samples/debug-in/withings?delete=true" />-->
+            <!--<bean ref="FetchDataHandlerDebug" />-->
+            <!--&lt;!&ndash; <to uri="activemq:queue:OVES.data.in" /> &ndash;&gt;-->
+            <!--<to uri="mock:out" />-->
+        <!--</route>-->
+
+    </camelContext>
+
+</blueprint>

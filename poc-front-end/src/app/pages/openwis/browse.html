@@ -1,0 +1,26 @@
+<div class="widgets">
+    <h2>Total: {{browseCtrl.total}}</h2>
+    <br>
+    <div class="row">
+        <div class="col-lg-6 col-md-6" ng-repeat="v in browseCtrl.results">
+            <div ba-panel ba-panel-title="{{v._source['OAI-PMH'].request.identifier | limitTo: 50}}"
+                 ba-panel-class="with-scroll table-panel">
+                {{v._source["OAI-PMH"].GetRecord.record.metadata["gmd:MD_Metadata"]["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:abstract"]["gco:CharacterString"]}}<br>
+                {{v._source|json|limitTo: 300}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="progress" ng-show="browseCtrl.isFetching">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                     aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    <span class="sr-only"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div infinite-scroll="browseCtrl.fetchNext()" infinite-scroll-distance="5"
+         infinite-scroll-disabled="browseCtrl.isFetching"></div>
+</div>

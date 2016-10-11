@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+feature:repo-add mvn:com.openwis/poc-back-end/1.0.0-SNAPSHOT/xml/features
+-->
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0"	name="DEFA">
+	<!-- External repositories needed for this features set -->
+	<repository>mvn:com.eurodyn.qlack2.util/qlack2-util-repack-karaf-features/2.0.0-SNAPSHOT/xml/features</repository>
+	<repository>mvn:com.eurodyn.qlack2.fuse/qlack2-fuse-karaf-features/2.0.0-SNAPSHOT/xml/features</repository>
+	<repository>mvn:com.eurodyn.qlack2.common/qlack2-common-karaf-features/1.0.0-SNAPSHOT/xml/features</repository>
+	<repository>mvn:org.apache.cxf.karaf/apache-cxf/3.1.1/xml/features</repository>
+	<repository>mvn:org.apache.activemq/activemq-karaf/5.14.1/xml/features</repository>
+	<repository>mvn:org.apache.camel.karaf/apache-camel/2.17.3/xml/features</repository>
+
+	<feature name="openwis" version="${project.version}">
+		<feature>okhttp</feature>
+		<feature>qlack2-util-repack-mysql</feature>
+		<feature>cxf-jaxrs</feature>
+		<feature>cxf-rs-security-cors</feature>
+		<feature version="1.0.0.RC1">pax-cdi</feature>
+		<feature>camel-blueprint</feature>
+		<feature>camel-cdi</feature>
+		<feature>activemq-camel</feature>
+		<feature>qlack2-common-util</feature>
+		<feature>qlack2-util-rest</feature>
+		<feature>qlack2-fuse-search</feature>
+		<feature>qlack2-util-repack-cxf-conf</feature>
+		<feature>qlack2-util-repack-jackson-rs</feature>
+		<bundle>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/2.6.3</bundle>
+		<bundle>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/2.6.3</bundle>
+
+		<bundle>mvn:com.openwis/poc-back-end/1.0.0-SNAPSHOT</bundle>
+	</feature>
+
+	<feature name="okhttp" version="${project.version}">
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/1.10.0_1</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/3.4.1_1</bundle>
+	</feature>
+</features>
