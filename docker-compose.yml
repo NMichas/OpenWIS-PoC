@@ -1,0 +1,38 @@
+version: "2"
+services:
+  activemq:
+    image: webcenter/activemq:5.13.2
+    restart: always
+    ports:
+      - "8161:8161"
+    environment:
+      - ACTIVEMQ_STATIC_QUEUES=index1;index2;index3
+      - ACTIVEMQ_ENABLED_AUTH=false
+  mysql:
+    image: mysql:5.7.15
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+  elasticsearch:
+    image: elasticsearch:1.7.5
+    restart: always
+    environment:
+      - es.node.name=OpenWIS
+  poc:
+    image: nassos/openwis-poc
+    restart: never
+    ports: 
+      - "8181:8181"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+      - 10.250.10.101
+      - 10.250.10.132
+    depends_on:
+      - activemq
+      - mysql
+      - elasticsearch
+    entrypoint: ["dockerize", "-timeout", "180s", 
+    "-wait", "tcp://mysql:3306", "-wait", "tcp://activemq:61616", 
+    "-wait", "tcp://elasticsearch:9200",
+    "/opt/karaf/bin/karaf"]

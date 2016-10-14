@@ -15,10 +15,10 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import com.openwis.poc.bootstrap.*;
 
 @Singleton
 public class Index3Processor {
-
     private static OkHttpClient client = new OkHttpClient();
 
     private String xmlToJson1(String xml) throws IOException {
@@ -60,7 +60,7 @@ public class Index3Processor {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url("http://localhost:9200/openwis/metadata/" + UUID.randomUUID().toString())
+                .url(BootstrapBean.ES_SERVER + "/openwis/metadata/" + UUID.randomUUID().toString())
                 .put(body) //PUT
                 .build();
         try (okhttp3.Response response = client.newCall(request).execute()) {

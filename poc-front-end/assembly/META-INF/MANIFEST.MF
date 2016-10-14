@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-Description: OpenWIS :: web resources
+Bundle-ManifestVersion: 2
+Bundle-Name: openwis-web
+Bundle-SymbolicName: openwis.web
+Bundle-Version: ${parsedVersion.osgiVersion}
+Jetty-WarFragmentResourcePath: /
+Web-ContextPath: /

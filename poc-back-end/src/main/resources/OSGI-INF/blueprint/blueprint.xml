@@ -5,15 +5,5 @@
 
 	<jpa:enable />
 	<tx:enable />
-	<!-- EXTERNAL SERVICES -->
-	<!--<reference id="SecurityProxyRest"-->
-		<!--interface="com.eurodyn.qlack2.fuse.security.proxy.api.SecurityProxy" />-->
 
-	<!--&lt;!&ndash; Ticket Interceptor &ndash;&gt;-->
-	<!--<bean id="ExtractTicketInterceptor"-->
-		<!--class="com.eurodyn.qlack2.fuse.security.proxy.impl.util.ExtractTicketInterceptor">-->
-		<!--<property name="ticketHeaderName" value="${ticket.header.name}" />-->
-	<!--</bean><bean id="CleanTicketInterceptor"-->
-		<!--class="com.eurodyn.qlack2.fuse.security.proxy.impl.util.CleanTicketInterceptor"/>-->
-		
 </blueprint>

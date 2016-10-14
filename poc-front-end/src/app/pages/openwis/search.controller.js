@@ -50,6 +50,7 @@
 		 * Functions.
 		 **********************************************************************/
 		function search(bar) {
+			console.debug("Searching for :" + vm.term);
 			return $http.get("http://localhost:8181/api/openwis/search?t=" +  vm.term)
 				.then(function (res) {
 						vm.total = res.data.hits.total;

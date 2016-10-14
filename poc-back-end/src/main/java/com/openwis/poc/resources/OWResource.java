@@ -1,5 +1,6 @@
 package com.openwis.poc.resources;
 
+import com.openwis.poc.bootstrap.BootstrapBean;
 import com.openwis.poc.dto.ServerDTO;
 import com.openwis.poc.model.Server;
 import okhttp3.OkHttpClient;
@@ -92,7 +93,7 @@ public class OWResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response browse(@QueryParam("p") int page, @QueryParam("s") int size) throws IOException {
         Request request = new Request.Builder().url(
-                "http://localhost:9200/openwis/metadata/_search/?size=" + size
+                BootstrapBean.ES_SERVER + "/openwis/metadata/_search/?size=" + size
                         + "&from=" + size * page).build();
         try (okhttp3.Response response = client.newCall(request).execute()) {
             return Response.ok(response.body().string()).build();
@@ -104,7 +105,7 @@ public class OWResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("t") String term) throws IOException {
         Request request = new Request.Builder().url(
-                "http://localhost:9200/openwis/_search?size=30&q=" + term).build();
+        		BootstrapBean.ES_SERVER + "/openwis/_search?size=30&q=" + term).build();
         try (okhttp3.Response response = client.newCall(request).execute()) {
             return Response.ok(response.body().string()).build();
         }
