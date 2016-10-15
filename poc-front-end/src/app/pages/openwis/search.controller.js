@@ -11,7 +11,7 @@
 		.controller("SearchController", SearchController);
 
 	/** @ngInject */
-	function SearchController($scope, $http) {
+	function SearchController($scope, $http, $location) {
 		var vm = this;
 
 		/***********************************************************************
@@ -49,9 +49,17 @@
 		/***********************************************************************
 		 * Functions.
 		 **********************************************************************/
+		function getServer() {
+			if ($location.port()) {
+				return $location.protocol() + '://'+ $location.host() +':'+  $location.port();
+			} else {
+				return $location.protocol() + '://'+ $location.host();
+			}
+		}
+
 		function search(bar) {
 			console.debug("Searching for :" + vm.term);
-			return $http.get("http://localhost:8181/api/openwis/search?t=" +  vm.term)
+			return $http.get(getServer() + "/api/openwis/search?t=" +  vm.term)
 				.then(function (res) {
 						vm.total = res.data.hits.total;
 						vm.results = res.data.hits.hits.splice(1);

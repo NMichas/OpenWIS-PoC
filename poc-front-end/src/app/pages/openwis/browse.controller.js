@@ -11,7 +11,7 @@
 		.controller("BrowseController", BrowseController);
 
 	/** @ngInject */
-	function BrowseController($scope, $http) {
+	function BrowseController($scope, $http, $location) {
 		var vm = this;
 
 		/***********************************************************************
@@ -50,10 +50,18 @@
 		/***********************************************************************
 		 * Functions.
 		 **********************************************************************/
+		function getServer() {
+			if ($location.port()) {
+				return $location.protocol() + '://'+ $location.host() +':'+  $location.port();
+			} else {
+				return $location.protocol() + '://'+ $location.host();
+			}
+		}
+
 		function fetchNext(bar) {
 			vm.isFetching = true;
 			currentPage++;
-			return $http.get("http://localhost:8181/api/openwis/browse?p=" +  currentPage + "&s=" + pageSize)
+			return $http.get(getServer() + "/api/openwis/browse?p=" +  currentPage + "&s=" + pageSize)
 				.then(function (res) {
 						vm.total = res.data.hits.total;
 						vm.results = vm.results.concat(res.data.hits.hits);

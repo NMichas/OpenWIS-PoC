@@ -11,7 +11,7 @@
 		.controller("ServersController", ServersController);
 
 	/** @ngInject */
-	function ServersController($scope, toastr, $http, x2js) {
+	function ServersController($scope, toastr, $http, x2js, $location) {
 		var vm = this;
 
 		/***********************************************************************
@@ -54,13 +54,21 @@
 		/***********************************************************************
 		 * Functions.
 		 **********************************************************************/
+		function getServer() {
+			if ($location.port()) {
+				return $location.protocol() + '://'+ $location.host() +':'+  $location.port();
+			} else {
+				return $location.protocol() + '://'+ $location.host();
+			}
+		}
+
 		function harvest() {
             toastr.success("Harvesting started.");
             console.log("HARVEST");
 		}
 
 		function addServer() {
-			$http.post("http://localhost:8181/api/openwis/add-server",
+			$http.post(getServer() +  "/api/openwis/add-server",
 				vm.newServer).then(function (res) {
 					toastr.success("Server " + vm.newServer.servername + " added successfully.");
 					vm.newServer = {};
@@ -77,7 +85,7 @@
 			if (!vm.newServer.url) {
 				return;
 			} else {
-				$http.get("http://localhost:8181/api/openwis/server-identify?url=" + encodeURI(vm.newServer.url))
+				$http.get(getServer() + "/api/openwis/server-identify?url=" + encodeURI(vm.newServer.url))
 					.then(function (res) {
 						vm.serverIdentity = x2js.xml_str2json(res.data);
 						console.log("IDENTITY=", vm.serverIdentity);
@@ -85,7 +93,7 @@
 						toastr.error("Could not identify server " + vm.newServer.servername + ".");
 					}
 				);
-				$http.get("http://localhost:8181/api/openwis/server-list-sets?url=" + encodeURI(vm.newServer.url))
+				$http.get(getServer() + "/api/openwis/server-list-sets?url=" + encodeURI(vm.newServer.url))
 					.then(function (res) {
 							vm.serverSets = x2js.xml_str2json(res.data);
 							console.log("SETS=", vm.serverSets);
@@ -97,7 +105,7 @@
 		}
 
 		function getServers() {
-			return $http.get("http://localhost:8181/api/openwis/servers-list")
+			return $http.get(getServer() + "/api/openwis/servers-list")
 				.then(function (res) {
 						vm.servers = res.data;
 					}, function (res) {
@@ -107,7 +115,7 @@
 		}
 
 		function harvest(serverID) {
-			$http.get("http://localhost:8181/api/openwis/harvest?id=" + serverID)
+			$http.get(getServer() + "/api/openwis/harvest?id=" + serverID)
 				.then(function (res) {
 
 						toastr.success("Harvesting started.");

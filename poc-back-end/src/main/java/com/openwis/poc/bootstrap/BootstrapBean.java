@@ -7,10 +7,7 @@ import okhttp3.RequestBody;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
-import java.io.IOException;
 import java.util.UUID;
-import org.ops4j.pax.cdi.api.OsgiService;
-import javax.inject.Inject;
 
 /**
  * Created by nassos on 6/10/16.
@@ -31,6 +28,7 @@ public class BootstrapBean {
                         "\"numeric_detection\": false" +
             "}}}";
 
+        System.out.println("Initialising ES at: " + ES_SERVER);
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
