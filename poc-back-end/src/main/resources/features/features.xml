@@ -24,13 +24,16 @@ feature:repo-add mvn:com.openwis/poc-back-end/1.0.0-SNAPSHOT/xml/features
 		<feature>activemq-camel</feature>
 		<feature>qlack2-common-util</feature>
 		<feature>qlack2-util-rest</feature>
-		<!-- <feature>qlack2-fuse-search</feature> -->
 		<feature>qlack2-util-repack-cxf-conf</feature>
 		<feature>qlack2-util-repack-jackson-rs</feature>
 		<bundle>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/2.6.3</bundle>
 		<bundle>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/2.6.3</bundle>
 		<bundle>mvn:org.json/json/20160810</bundle>
-		<bundle>mvn:com.openwis/poc-back-end/1.0.0-SNAPSHOT</bundle>
+		<bundle start-level="90">mvn:com.openwis/poc-back-end/1.0.0-SNAPSHOT</bundle>
+	</feature>
+
+	<feature name="openwis-frontend" version="${project.version}">
+		<bundle>mvn:com.openwis/poc-front-end/1.0.0-SNAPSHOT/zip/distribution</bundle>
 	</feature>
 
 	<feature name="okhttp" version="${project.version}">

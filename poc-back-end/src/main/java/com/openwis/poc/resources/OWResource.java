@@ -17,7 +17,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import static com.openwis.poc.bootstrap.BootstrapBean.httpProxy;
 
 @Singleton
 @Path("openwis")
@@ -27,11 +32,22 @@ public class OWResource {
     @EndpointInject(uri = "direct:index1.post")
     ProducerTemplate index1Producer;
 
-    /** EntityManager setter. */
+    /**
+     * EntityManager setter.
+     */
     @PersistenceContext(unitName = "openwis")
     private EntityManager em;
 
     private static OkHttpClient client = new OkHttpClient();
+    private static OkHttpClient clientProxy = httpProxy != null
+            ? new OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(
+                    httpProxy.getHost(), BootstrapBean.httpProxy.getPort())))
+            .build()
+            : new OkHttpClient();
 
     @POST
     @Path("add-server")
@@ -52,7 +68,7 @@ public class OWResource {
     @Produces(MediaType.APPLICATION_XML)
     public Response serverIdentify(@QueryParam("url") String url) throws IOException {
         Request request = new Request.Builder().url(url + "?verb=Identify").build();
-        try (okhttp3.Response response = client.newCall(request).execute()) {
+        try (okhttp3.Response response = clientProxy.newCall(request).execute()) {
             return Response.ok(response.body().string()).build();
         }
     }
@@ -62,7 +78,7 @@ public class OWResource {
     @Produces(MediaType.APPLICATION_XML)
     public Response listSets(@QueryParam("url") String url) throws IOException {
         Request request = new Request.Builder().url(url + "?verb=ListSets").build();
-        try (okhttp3.Response response = client.newCall(request).execute()) {
+        try (okhttp3.Response response = clientProxy.newCall(request).execute()) {
             return Response.ok(response.body().string()).build();
         }
     }
@@ -70,7 +86,7 @@ public class OWResource {
     @GET
     @Path("servers-list")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listServers()  {
+    public Response listServers() {
         return Response.ok(
                 em.createQuery("select s from Server s").getResultList()
         ).build();
@@ -79,7 +95,7 @@ public class OWResource {
     @GET
     @Path("harvest")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response harvest(@QueryParam("id") String id)  {
+    public Response harvest(@QueryParam("id") String id) {
         Server server = em.find(Server.class, id);
         index1Producer.sendBody(server.getUrl() + "," + server.getDataset());
 
@@ -105,7 +121,7 @@ public class OWResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("t") String term) throws IOException {
         Request request = new Request.Builder().url(
-        		BootstrapBean.ES_SERVER + "/openwis/_search?size=30&q=" + term).build();
+                BootstrapBean.ES_SERVER + "/openwis/_search?size=30&q=" + term).build();
         try (okhttp3.Response response = client.newCall(request).execute()) {
             return Response.ok(response.body().string()).build();
         }

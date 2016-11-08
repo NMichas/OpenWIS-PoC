@@ -12,6 +12,11 @@
     <modules>
         <module>poc-back-end</module>
         <module>poc-front-end</module>
+        <module>poc-dist</module>
     </modules>
+
+    <properties>
+        <karaf.version>4.0.6</karaf.version>
+    </properties>
 
 </project>

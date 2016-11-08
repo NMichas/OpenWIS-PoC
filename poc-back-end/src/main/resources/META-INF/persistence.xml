@@ -8,12 +8,7 @@
 		<class>com.openwis.poc.model.Server</class>
 
 		<properties>
-			<!--<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />-->
-
 			<property name="hibernate.show_sql" value="false" />
-			<!--<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.EJB3NamingStrategy"/>-->
-			<!--<property name="spring.jpa.hibernate.naming_strategy" value="org.hibernate.cfg.EJB3NamingStrategy"/>-->
-			<!--<property name="namingStrategy" value="net.sf.hibernate.cfg.ImprovedNamingStrategy"/>-->
 		</properties>
 	</persistence-unit>
 

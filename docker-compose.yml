@@ -23,11 +23,15 @@ services:
     restart: never
     ports: 
       - "8181:8181"
+    environment:
+      - HTTP_PROXY
     dns:
       - 8.8.8.8
       - 8.8.4.4
       - 10.250.10.101
       - 10.250.10.132
+      - 151.170.107.54
+      - 151.170.107.54
     depends_on:
       - activemq
       - mysql
@@ -35,4 +39,4 @@ services:
     entrypoint: ["dockerize", "-timeout", "180s", 
     "-wait", "tcp://mysql:3306", "-wait", "tcp://activemq:61616", 
     "-wait", "tcp://elasticsearch:9200",
-    "/opt/karaf/bin/karaf"]
+    "/opt/openwis/bin/karaf"]
