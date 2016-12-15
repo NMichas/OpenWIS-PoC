@@ -40,3 +40,14 @@ Provided you have a Docker + Docker Compose in place, you can install & boot the
 
 If your Docker Engine is behind a proxy, you can inject your proxy's info as:  
 `curl https://raw.githubusercontent.com/NMichas/OpenWIS-PoC/master/docker-compose.yml | HTTP_PROXY=http://proxy:port docker-compose -f - up`
+
+Docker-compose is done initialising your local installation when you see in the console:  
+
+    Index initialised.
+    Mapping debugging disabled.
+    
+Then you can access the PoC on:  
+[http://localhost:8181](http://localhost:8181)
+
+_If you performed the installation on a remote machine, please change `localhost` 
+to the IP/domain of your remote machine_
