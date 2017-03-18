@@ -20,7 +20,7 @@ services:
       - es.node.name=OpenWIS
   poc:
     image: nassos/openwis-poc
-    restart: never
+    restart: always
     ports: 
       - "8181:8181"
     environment:
